@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+    webserver:
+        build:
+            context: .
+            dockerfile: ./docker/bin/webserver/Dockerfile
+        links:
+            - database
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html:rw
+            - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
+            - ./docker/config/apache/conf/custom.conf:/etc/apache2/conf-enabled/custom.conf
+            - ./docker/config/apache/sites:/etc/apache2/sites-enabled
+        extra_hosts:
+            - host.docker.internal:host-gateway
+
+    database:
+        image: mysql:8.0.30
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/data/mysql:/var/lib/mysql
+            - ./docker/config/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+        command: --default-authentication-plugin=mysql_native_password
+
+    mercure:
+        image: dunglas/mercure:v0.14.3
+        ports:
+            - "9090:9090"
+        volumes:
+            - ./docker/data/mercure/data:/data
+            - ./docker/data/mercure/config:/config
+        environment:
+            SERVER_NAME: ":9090"
+            MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET:-!ChangeMe!}
+            MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET:-!ChangeMe!}
+            MERCURE_EXTRA_DIRECTIVES: |
+                heartbeat 15s
+        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
