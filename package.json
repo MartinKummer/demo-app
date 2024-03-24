@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "github:symfony/webpack-encore",
+    "@vue/compiler-sfc": "^3.4.21",
+    "vue": "^3.4.21",
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16",
+    "webpack-notifier": "^1.15.0"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "dependencies": {
+    "@babel/core": "^7.24.3",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "modules": "^0.4.0",
+    "node": "^21.7.1",
+    "node-modules": "^0.0.1",
+    "pinia": "^2.1.7",
+    "vite": "^5.2.2",
+    "vue-router": "^4.3.0",
+    "vue-toast-notification": "^3.1.2",
+    "webpack": "^5.91.0"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production",
+    "test": "jest"
+  }
+}
